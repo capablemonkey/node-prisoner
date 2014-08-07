@@ -1,6 +1,6 @@
 var _ = require('underscore');
 
-function SimultaneousGame(duration) {
+function PrisonersGame(duration) {
 	this.players = [];
 	this.duration = duration;
 	this.currentTurn = 0;
@@ -11,10 +11,10 @@ function SimultaneousGame(duration) {
 // {
 // 	turn: 2,
 // 	player: p,
-// 	choice: 2
+// 	choice: 'defect'
 // }
 
-SimultaneousGame.prototype.makeMove = function(player, move) {
+PrisonersGame.prototype.makeMove = function(player, move) {
 	if (!_.contains(player.possibleMoves, move)) {throw new Error('Player cannot make that move!');}
 	if (this.currentTurn >= this.duration) {throw new Error('Game has already ended!');}
 
@@ -40,7 +40,7 @@ SimultaneousGame.prototype.makeMove = function(player, move) {
 	return true;
 };
 
-SimultaneousGame.prototype.endTurn = function() {
+PrisonersGame.prototype.endTurn = function() {
 	var movesThisTurn = _.where(this.moveHistory, {turn: this.currentTurn});
 
 	// end turn, calculate payoffs 
@@ -94,41 +94,7 @@ payoff['cooperate']['defect']
 }
 */
 
-var strategyTitForTat = function(game, player, otherPlayer) {
-	if (game.currentTurn === 0) return 'cooperate';
-
-	var opponentsLastMove = otherPlayer.moveHistory[game.currentTurn - 1].choice;
-	return opponentsLastMove;
+module.exports = {
+	PrisonersGame: PrisonersGame,
+	Player: Player
 };
-
-var PRISONER_PAYOFFS = {
-	'defect': {
-		'cooperate': 5,
-		'defect': -2 
-	},
-	'cooperate': {
-		'cooperate': 2,
-		'defect': -5
-	}
-};
-
-var PRISONER_MOVES = ['cooperate', 'defect'];
-
-var p1 = new Player('joe', PRISONER_PAYOFFS, PRISONER_MOVES, null, 0);
-var p2 = new Player('rob', PRISONER_PAYOFFS, PRISONER_MOVES, strategyTitForTat, 0);
-
-var game = new SimultaneousGame(10);
-game.players.push(p1);
-game.players.push(p2);
-
-game.makeMove(p1, 'defect');
-game.makeMove(p1, 'defect');
-game.makeMove(p1, 'defect');
-game.makeMove(p1, 'defect');
-game.makeMove(p1, 'cooperate');
-game.makeMove(p1, 'cooperate');
-
-console.log(game.moveHistory);
-console.log(game.players);
-
-module.exports = SimultaneousGame;
