@@ -15,8 +15,8 @@ var PRISONER_PAYOFFS = {
 
 var PRISONER_MOVES = ['cooperate', 'defect'];
 
-var p1 = new logic.Player('joe', PRISONER_PAYOFFS, PRISONER_MOVES, strategies.titForTat, 0);
-var p2 = new logic.Player('rob', PRISONER_PAYOFFS, PRISONER_MOVES, strategies.titForTat, 0);
+var p1 = new logic.Player('joe', PRISONER_PAYOFFS, PRISONER_MOVES, strategies.grudger, 0);
+var p2 = new logic.Player('rob', PRISONER_PAYOFFS, PRISONER_MOVES, strategies.alwaysDefect, 0);
 
 var game = new logic.PrisonersGame(10);
 game.players.push(p1);
