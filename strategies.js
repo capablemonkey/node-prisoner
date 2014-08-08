@@ -26,3 +26,7 @@ module.exports.grudger = function(game, player, otherPlayer) {
 	if (everDefected) return 'defect';
 	else return 'cooperate';
 };
+
+module.exports.random = function(game, player, otherPlayer) {
+	return _.sample(['defect', 'cooperate']);
+};
